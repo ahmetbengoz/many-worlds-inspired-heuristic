@@ -21,4 +21,11 @@ The code reproduces the convergence comparison figure (Figure 3) on a 50-city Eu
 Install dependencies:
 
 ```bash
+
+## Citation
+
+If you use this code, please cite the accompanying manuscript:
+
+Ahmet Bengöz, *Optimization as Measurement: A Many-Worlds–Inspired Framework for Escaping Premature Commitment in Heuristic Search*, under review.
+
 pip install -r requirements.txt
