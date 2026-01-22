@@ -1,4 +1,5 @@
 # Many-Worlds–Inspired Heuristic Optimization (MWI-H)
+DOI: https://doi.org/10.5281/zenodo.18336732
 
 This repository provides a reproducible Python implementation accompanying the manuscript:
 
