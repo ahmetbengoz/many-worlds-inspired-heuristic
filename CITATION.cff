@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this software or dataset, please cite the associated manuscript and archived Zenodo release."
+title: "MWI-H: An Entropy-Aware Trajectory-Persistence Metaheuristic for Mitigating Premature Commitment in Heuristic Search"
+authors:
+  - family-names: "Bengöz"
+    given-names: "Ahmet"
+    orcid: "https://orcid.org/0000-0002-5772-4734"
+version: "2.0.0"
+date-released: "2026-05-27"
+repository-code: "https://github.com/ahmetbengoz/many-worlds-inspired-heuristic"
+license: "MIT"
+keywords:
+  - metaheuristics
+  - premature convergence
+  - diversity preservation
+  - traveling salesman problem
+  - TSPLIB
