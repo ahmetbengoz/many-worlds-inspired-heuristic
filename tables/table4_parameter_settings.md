@@ -1,0 +1,26 @@
+| algorithm   | parameter       |     value |
+|:------------|:----------------|----------:|
+| MWI-H       | population_size |   10      |
+| MWI-H       | iterations      |   30      |
+| MWI-H       | beta            |    5      |
+| MWI-H       | gamma           |    3      |
+| MWI-H       | local_samples   |    4      |
+| SA          | iterations      |  500      |
+| SA          | t0              | 1000      |
+| SA          | alpha           |    0.9975 |
+| GA          | population_size |   12      |
+| GA          | generations     |   30      |
+| GA          | mutation_rate   |    0.25   |
+| GA          | local_samples   |    1      |
+| ACO         | ants            |    6      |
+| ACO         | iterations      |   12      |
+| ACO         | alpha           |    1      |
+| ACO         | beta            |    3      |
+| ACO         | rho             |    0.25   |
+| ACO         | q               |  100      |
+| ACO         | candidate_k     |   10      |
+| ACO         | local_samples   |    1      |
+| ABC/BCO     | food_sources    |   10      |
+| ABC/BCO     | cycles          |   30      |
+| ABC/BCO     | limit           |   15      |
+| ABC/BCO     | local_samples   |    2      |
