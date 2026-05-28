@@ -76,7 +76,9 @@ Under the fixed-configuration benchmark protocol, MWI-H obtains the best average
 
 ## Archival release
 
-This repository is intended to be archived through the GitHub-Zenodo integration. After creating the final GitHub release, update the manuscript Data and Code Availability statement with the newly generated Zenodo version DOI.
+The reproducibility package is archived on Zenodo:
+
+https://doi.org/10.5281/zenodo.20424855.
 
 ## Citation
 
