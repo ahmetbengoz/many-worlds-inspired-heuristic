@@ -42,7 +42,7 @@ PARAMETERS = {
 }
 
 FAST_PARAMETERS = {
-    # Chat-validation budget: intentionally small so every uploaded instance can be exercised in-session.
+    # # Quick-validation budget: intentionally small so every included instance can be exercised quickly.
     # Use PARAMETERS above with --runs 30 to reproduce the standard manuscript protocol.
     'MWI-H': {'population_size': 12, 'iterations': 40, 'beta': 6.0, 'gamma': 4.0, 'local_samples': 6, 'candidate_k': 12, 'ls_passes': 1, 'ls_moves': 20, 'init_passes': 1, 'init_moves': 30, 'elite_count': 1, 'restart_patience': 20},
     'SA': {'iterations': 500, 't0': 1000.0, 'alpha': 0.9975},
