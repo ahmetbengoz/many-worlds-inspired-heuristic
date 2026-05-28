@@ -67,8 +67,7 @@ python experiments/make_tables.py
 On Windows PowerShell, the same workflow can be launched with:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .
-un_standard_experiment.ps1
+powershell -ExecutionPolicy Bypass -File ./run_standard_experiment.ps1
 ```
 
 ## Reported headline result
