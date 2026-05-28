@@ -1,12 +1,12 @@
 """MWI-H: measurement-inspired trajectory-persistence metaheuristic.
 
-The implementation combines route-improvement mechanisms while preserving the
-mathematical identity of the method: normalized influence weights, entropy-based
-trajectory persistence, and a directed transition kernel. The main engineering
-change is bounded candidate-list 2-opt descent plus controlled double-bridge
-perturbation, so the method can make credible local-optimum escape claims on
-TSPLIB rather than relying on weak random mutation.
+The implementation combines normalized influence weights, entropy-based
+trajectory persistence, a directed transition kernel, bounded candidate-list
+2-opt descent, double-bridge perturbation, guided trajectory exchange,
+personal-best memory, and elitist persistence for symmetric Euclidean TSP
+benchmark experiments.
 """
+
 from __future__ import annotations
 import numpy as np
 
