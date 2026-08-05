@@ -1,4 +1,4 @@
-"""MWI-H: measurement-inspired trajectory-persistence metaheuristic.
+"""MWI-H: multi-trajectory weighting-and-interaction heuristic.
 
 The implementation combines normalized influence weights, entropy-based
 trajectory persistence, a directed transition kernel, bounded candidate-list
@@ -23,7 +23,7 @@ from .operators import (
     two_opt_candidate_descent,
     double_bridge_kick,
 )
-from .metrics import influence_weights, entropy, effective_count
+from .metrics import influence_weights, entropy, effective_count, population_edge_diversity
 
 
 def directed_transition_kernel(p: np.ndarray, fhat: np.ndarray, gamma: float = 3.0, eps: float = 1e-12) -> np.ndarray:
@@ -33,34 +33,44 @@ def directed_transition_kernel(p: np.ndarray, fhat: np.ndarray, gamma: float = 3
     the uphill penalty max(0, fhat_j - fhat_i).
     """
     n = len(p)
+    if n == 1:
+        return np.ones((1, 1), dtype=float)
     tau = np.empty((n, n), dtype=float)
     for i in range(n):
         penalty = np.maximum(0.0, fhat - fhat[i])
         row = p * np.exp(-gamma * penalty)
-        row[i] += eps
-        tau[i] = row / (row.sum() + eps)
+        row[i] = 0.0
+        denom = float(row.sum())
+        if denom <= eps:
+            row[:] = 1.0
+            row[i] = 0.0
+            denom = float(row.sum())
+        tau[i] = row / denom
     return tau
 
 
 def _initial_population(dist: np.ndarray, rng: np.random.Generator, population_size: int, cand: np.ndarray,
-                        init_passes: int, init_moves: int) -> np.ndarray:
+                        init_passes: int, init_moves: int, use_local_search: bool = True) -> np.ndarray:
     n = dist.shape[0]
     pop = []
     # Deterministic-ish high-quality anchors from different starts.
     starts = list(rng.choice(n, size=min(population_size // 2, n), replace=False))
     for s in starts:
         t = nearest_neighbor_tour(dist, rng, start=int(s), random_k=1)
-        t, _ = two_opt_candidate_descent(t, dist, cand, max_passes=init_passes, max_moves=init_moves)
+        if use_local_search:
+            t, _ = two_opt_candidate_descent(t, dist, cand, max_passes=init_passes, max_moves=init_moves)
         pop.append(t)
     # Stochastic nearest-neighbour variants preserve multiple basins.
     while len(pop) < max(2, int(0.75 * population_size)):
         t = nearest_neighbor_tour(dist, rng, random_k=4)
-        t, _ = two_opt_candidate_descent(t, dist, cand, max_passes=max(1, init_passes // 2), max_moves=max(10, init_moves // 2))
+        if use_local_search:
+            t, _ = two_opt_candidate_descent(t, dist, cand, max_passes=max(1, init_passes // 2), max_moves=max(10, init_moves // 2))
         pop.append(t)
     # Random trajectories, lightly improved, maintain non-collapse diversity.
     while len(pop) < population_size:
         t = random_tour(n, rng)
-        t, _ = best_of_random_two_opt(t, dist, rng, samples=32)
+        if use_local_search:
+            t, _ = best_of_random_two_opt(t, dist, rng, samples=32)
         pop.append(t.astype(np.int32))
     return np.asarray(pop, dtype=np.int32)
 
@@ -81,12 +91,21 @@ def run_mwih(
     init_moves: int = 120,
     elite_count: int = 2,
     restart_patience: int = 55,
+    variant: str = 'full',
 ) -> dict:
+    variants = {'full', 'uniform_weights', 'no_directional_penalty', 'no_persistence', 'no_local_search'}
+    if variant not in variants:
+        raise ValueError(f'Unknown MWI-H variant: {variant}. Expected one of {sorted(variants)}')
     rng = np.random.default_rng(seed)
     n = dist.shape[0]
     cand = candidate_lists(dist, k=min(candidate_k, max(4, n - 1)))
 
-    population = _initial_population(dist, rng, population_size, cand, init_passes, init_moves)
+    use_local_search = variant != 'no_local_search'
+    use_persistence = variant != 'no_persistence'
+    population = _initial_population(
+        dist, rng, population_size, cand, init_passes, init_moves,
+        use_local_search=use_local_search,
+    )
     lengths = np.asarray([tour_length(t, dist) for t in population], dtype=float)
     personal_best = population.copy()
     personal_best_lengths = lengths.copy()
@@ -100,11 +119,12 @@ def run_mwih(
     entropy_curve = []
     neff_curve = []
     active_curve = []
+    edge_diversity_curve = []
     mean_curve = []
 
     for it in range(iterations):
-        p, fhat = influence_weights(lengths, beta=beta)
-        tau = directed_transition_kernel(p, fhat, gamma=gamma)
+        p, fhat = influence_weights(lengths, beta=0.0 if variant == 'uniform_weights' else beta)
+        tau = directed_transition_kernel(p, fhat, gamma=0.0 if variant == 'no_directional_penalty' else gamma)
         H = entropy(p)
         Neff = effective_count(p)
         convergence.append(best_len)
@@ -112,6 +132,7 @@ def run_mwih(
         entropy_curve.append(H)
         neff_curve.append(Neff)
         active_curve.append(int((p > influence_eps).sum()))
+        edge_diversity_curve.append(population_edge_diversity(population))
 
         order = np.argsort(lengths)
         elites = order[:max(1, min(elite_count, population_size))]
@@ -126,12 +147,16 @@ def run_mwih(
                 candidate = order_crossover(population[i], population[j], rng)
             elif r < 0.70:
                 candidate = guided_position_move(population[i], population[j], rng)
-            elif r < 0.86:
+            elif r < 0.86 and use_persistence:
                 candidate = personal_best[i].copy()
                 candidate = double_bridge_kick(candidate, rng)
             else:
                 # Low-influence trajectories periodically explore from the global best basin.
-                candidate = best_tour.copy() if p[i] < (1.0 / population_size) else population[i].copy()
+                candidate = (
+                    best_tour.copy()
+                    if use_persistence and p[i] < (1.0 / population_size)
+                    else population[i].copy()
+                )
                 candidate = double_bridge_kick(candidate, rng)
 
             # Small stochastic variation before deterministic bounded intensification.
@@ -139,10 +164,11 @@ def run_mwih(
                 candidate = swap_mutation(candidate, rng)
             if rng.random() < 0.20:
                 candidate = insertion_mutation(candidate, rng)
-            if rng.random() < 0.20:
+            if use_local_search and rng.random() < 0.20:
                 candidate, _ = best_of_random_two_opt(candidate, dist, rng, samples=local_samples)
 
-            candidate, _ = two_opt_candidate_descent(candidate, dist, cand, max_passes=ls_passes, max_moves=ls_moves)
+            if use_local_search:
+                candidate, _ = two_opt_candidate_descent(candidate, dist, cand, max_passes=ls_passes, max_moves=ls_moves)
             cand_len = tour_length(candidate, dist)
 
             if cand_len <= lengths[i]:
@@ -157,23 +183,25 @@ def run_mwih(
                 new_lengths[i] = cand_len
 
             # Personal trajectory memory.
-            if cand_len < personal_best_lengths[i]:
+            if use_persistence and cand_len < personal_best_lengths[i]:
                 personal_best[i] = candidate.copy()
                 personal_best_lengths[i] = cand_len
 
         # Explicit elitist persistence: preserves best measured trajectories without collapsing all others.
-        worst = np.argsort(new_lengths)[-len(elites):]
-        for src, dst in zip(elites, worst):
-            if lengths[src] < new_lengths[dst]:
-                new_population[dst] = population[src].copy()
-                new_lengths[dst] = lengths[src]
+        if use_persistence:
+            worst = np.argsort(new_lengths)[-len(elites):]
+            for src, dst in zip(elites, worst):
+                if lengths[src] < new_lengths[dst]:
+                    new_population[dst] = population[src].copy()
+                    new_lengths[dst] = lengths[src]
 
         # Stagnation-aware basin escape, applied only to a small low-quality tail.
         if it - last_improve >= restart_patience:
             tail = np.argsort(new_lengths)[-max(2, population_size // 6):]
             for idx in tail:
                 kicked = double_bridge_kick(best_tour, rng)
-                kicked, _ = two_opt_candidate_descent(kicked, dist, cand, max_passes=ls_passes, max_moves=ls_moves)
+                if use_local_search:
+                    kicked, _ = two_opt_candidate_descent(kicked, dist, cand, max_passes=ls_passes, max_moves=ls_moves)
                 k_len = tour_length(kicked, dist)
                 new_population[idx] = kicked
                 new_lengths[idx] = k_len
@@ -188,6 +216,7 @@ def run_mwih(
 
     return {
         'algorithm': 'MWI-H',
+        'variant': variant,
         'best_length': best_len,
         'best_tour': best_tour.tolist(),
         'final_mean_length': float(lengths.mean()),
@@ -196,4 +225,5 @@ def run_mwih(
         'entropy_curve': entropy_curve,
         'neff_curve': neff_curve,
         'active_curve': active_curve,
+        'edge_diversity_curve': edge_diversity_curve,
     }

@@ -12,8 +12,9 @@ notation = pd.DataFrame([
     {'symbol':'$\\hat f_i^t$','meaning':'Min-max normalized objective value at iteration $t$'},
     {'symbol':'$\\beta$','meaning':'Influence-weight selection sharpness'},
     {'symbol':'$p_i^t$','meaning':'Normalized influence weight of trajectory $i$'},
-    {'symbol':'$H^t$','meaning':'Entropy of the influence-weight distribution'},
-    {'symbol':'$N_{\\mathrm{eff}}^t$','meaning':'Effective number of active trajectories, $\\exp(H^t)$'},
+    {'symbol':'$H^t$','meaning':'Entropy of the influence-weight distribution (weight-balance diagnostic)'},
+    {'symbol':'$N_{\\mathrm{eff}}^t$','meaning':'Effective influence count, $\\exp(H^t)$'},
+    {'symbol':'$D_E^t$','meaning':'Mean pairwise undirected edge disagreement among tours'},
     {'symbol':'$\\gamma$','meaning':'Directed transition selectivity parameter'},
     {'symbol':'$\\tau_{ij}^t$','meaning':'Directed transition probability from trajectory $i$ to trajectory $j$'},
     {'symbol':'$\\mathcal{N}(.)$','meaning':'Neighborhood operator such as 2-opt, swap, or insertion'},
@@ -24,12 +25,12 @@ notation = pd.DataFrame([
 notation.to_csv(tables/'table1_notation.csv',index=False)
 
 diff = pd.DataFrame([
-    {'method':'Simulated Annealing (SA)','population_structure':'Single trajectory','diversity_mechanism':'Temperature-based acceptance','transition_or_exchange':'No inter-trajectory transition','persistence_model':'Current trajectory may move to worse states; no weighted coexistence','difference_from_MWIH':'MWI-H maintains multiple weighted trajectories and tracks entropy.'},
+    {'method':'Operator-controlled ILS','population_structure':'Single incumbent','diversity_mechanism':'Double-bridge perturbation and bounded 2-opt','transition_or_exchange':'No inter-trajectory interaction','persistence_model':'One current tour and one global best','difference_from_MWIH':'Uses the same principal operators and candidate-generation count, isolating the effect of population weighting and interaction.'},
+    {'method':'Simulated Annealing (SA)','population_structure':'Single trajectory','diversity_mechanism':'Temperature-based acceptance','transition_or_exchange':'No inter-trajectory transition','persistence_model':'Current trajectory may move to worse states; no weighted coexistence','difference_from_MWIH':'MWI-H maintains multiple weighted trajectories and reports weight balance separately from edge diversity.'},
     {'method':'Genetic Algorithm (GA)','population_structure':'Population of chromosomes','diversity_mechanism':'Crossover, mutation, selection pressure','transition_or_exchange':'Genetic recombination','persistence_model':'Low-fitness individuals are commonly eliminated by selection','difference_from_MWIH':'MWI-H avoids full collapse by preserving influence-weighted trajectories.'},
     {'method':'Island models','population_structure':'Multiple subpopulations','diversity_mechanism':'Migration topology and isolated evolution','transition_or_exchange':'Periodic migration among islands','persistence_model':'Subpopulations persist; individuals still subject to selection','difference_from_MWIH':'MWI-H operates at trajectory-influence level with a directed transition kernel, not island migration.'},
     {'method':'ABC/BCO','population_structure':'Food sources / bee roles','diversity_mechanism':'Employed, onlooker, and scout search phases','transition_or_exchange':'Recruitment around food sources','persistence_model':'Unproductive sources are abandoned after a limit','difference_from_MWIH':'MWI-H does not model bee roles and uses normalized influence and entropy to quantify non-collapse.'},
     {'method':'ACO','population_structure':'Constructive ant agents','diversity_mechanism':'Pheromone evaporation and probabilistic construction','transition_or_exchange':'Indirect pheromone-mediated communication','persistence_model':'Search memory stored in edges/pheromone, not full trajectory weights','difference_from_MWIH':'MWI-H stores influence over full candidate trajectories and directed trajectory transitions.'},
-    {'method':'QEA/QPSO','population_structure':'Quantum-inspired representation or particle model','diversity_mechanism':'Amplitude/probability representation or quantum-behaved update','transition_or_exchange':'Representation-specific update equations','persistence_model':'Usually representation-level probability, not explicit TSP trajectory persistence','difference_from_MWIH':'MWI-H uses no quantum hardware and no quantum state; MWI is only a design metaphor.'},
 ])
 diff.to_csv(tables/'table2_method_differences.csv',index=False)
 
@@ -44,8 +45,16 @@ summary_cols=['instance','dimension','algorithm','runs','best_known','best','mea
 summary[summary_cols].to_csv(tables/'table5_performance_results.csv',index=False)
 pd.read_csv(res/'statistical_ranks.csv').to_csv(tables/'table6a_statistical_ranks.csv',index=False)
 pd.read_csv(res/'statistical_tests.csv').to_csv(tables/'table6b_statistical_tests.csv',index=False)
+pd.read_csv(res/'ablation'/'ablation_summary.csv').to_csv(tables/'table7a_ablation_summary.csv',index=False)
+pd.read_csv(res/'ablation'/'ablation_tests.csv').to_csv(tables/'table7b_ablation_tests.csv',index=False)
+pd.read_csv(res/'sensitivity'/'sensitivity_summary.csv').to_csv(tables/'table8_sensitivity_summary.csv',index=False)
 # Also create markdown copies.
 for csv in tables.glob('table*.csv'):
     df=pd.read_csv(csv)
-    csv.with_suffix('.md').write_text(df.to_markdown(index=False), encoding='utf-8')
+    header='| ' + ' | '.join(str(c) for c in df.columns) + ' |'
+    rule='| ' + ' | '.join('---' for _ in df.columns) + ' |'
+    body=[]
+    for row in df.fillna('').astype(str).itertuples(index=False, name=None):
+        body.append('| ' + ' | '.join(v.replace('|', '\\|').replace('\n', ' ') for v in row) + ' |')
+    csv.with_suffix('.md').write_text('\n'.join([header, rule] + body) + '\n', encoding='utf-8')
 print('Tables written to', tables)

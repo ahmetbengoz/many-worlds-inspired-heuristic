@@ -13,8 +13,8 @@ from src.stats_tests import friedman_and_wilcoxon
 CSV_NAMES = [
     "dataset_summary.csv",
     "per_run_results.csv",
-    "convergence_curves.csv",
-    "entropy_curves.csv",
+    "convergence_curves.csv.gz",
+    "entropy_curves.csv.gz",
     "performance_summary.csv",
 ]
 

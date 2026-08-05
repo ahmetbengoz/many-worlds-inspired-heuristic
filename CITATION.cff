@@ -1,19 +1,21 @@
 cff-version: 1.2.0
 message: "If you use this software or dataset, please cite the associated manuscript and archived Zenodo release."
-title: "MWI-H: An Entropy-Aware Trajectory-Persistence Metaheuristic for Mitigating Premature Commitment in Heuristic Search"
+title: "Do Multi-Trajectory Weights Preserve Search Diversity? A Controlled Component Study of MWI-H on the Symmetric Traveling Salesman Problem"
 authors:
   - family-names: "Bengöz"
     given-names: "Ahmet"
     orcid: "https://orcid.org/0000-0002-5772-4734"
-version: "2.0.0"
-date-released: "2026-05-27"
+version: "4.0.0"
+date-released: "2026-08-05"
 doi: "10.5281/zenodo.20424855"
 url: "https://doi.org/10.5281/zenodo.20424855"
 repository-code: "https://github.com/ahmetbengoz/many-worlds-inspired-heuristic"
 license: "MIT"
 keywords:
   - metaheuristics
-  - premature convergence
+  - multi-trajectory search
+  - component analysis
   - diversity preservation
+  - iterated local search
   - traveling salesman problem
   - TSPLIB

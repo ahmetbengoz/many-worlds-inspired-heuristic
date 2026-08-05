@@ -1,7 +1,8 @@
-| test              |   statistic |       p_value |   n_blocks | comparison       |         p_raw |        p_holm |
-|:------------------|------------:|--------------:|-----------:|:-----------------|--------------:|--------------:|
-| Friedman          |     76.8364 |   8.14502e-16 |         22 | nan              | nan           | nan           |
-| Wilcoxon_vs_MWI-H |     53      | nan           |        nan | MWI-H vs ABC/BCO |   0.015583    |   0.015583    |
-| Wilcoxon_vs_MWI-H |      0      | nan           |        nan | MWI-H vs ACO     |   4.76837e-07 |   1.90735e-06 |
-| Wilcoxon_vs_MWI-H |      1      | nan           |        nan | MWI-H vs GA      |   9.53674e-07 |   1.90735e-06 |
-| Wilcoxon_vs_MWI-H |      0      | nan           |        nan | MWI-H vs SA      |   4.76837e-07 |   1.43051e-06 |
+| test | statistic | p_value | n_blocks | comparison | p_raw | median_gap_difference | wins | ties | losses | p_holm |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Friedman | 51.20779220779224 | 7.841121829619343e-10 | 11.0 |  |  |  |  |  |  |  |
+| Wilcoxon_vs_MWI-H | 0.0 |  |  | MWI-H vs ABC/BCO | 0.0009765625 | -9.90298202614379 | 11.0 | 0.0 | 0.0 | 0.0048828125 |
+| Wilcoxon_vs_MWI-H | 2.0 |  |  | MWI-H vs ACO | 0.0029296875 | -1.7896187701657111 | 10.0 | 0.0 | 1.0 | 0.0048828125 |
+| Wilcoxon_vs_MWI-H | 0.0 |  |  | MWI-H vs GA | 0.0009765625 | -42.47191584967321 | 11.0 | 0.0 | 0.0 | 0.0048828125 |
+| Wilcoxon_vs_MWI-H | 0.0 |  |  | MWI-H vs ILS | 0.0009765625 | -7.847222222222221 | 11.0 | 0.0 | 0.0 | 0.0048828125 |
+| Wilcoxon_vs_MWI-H | 0.0 |  |  | MWI-H vs SA | 0.0009765625 | -107.74918300653596 | 11.0 | 0.0 | 0.0 | 0.0048828125 |
