@@ -109,7 +109,7 @@ edge diversity within the stated fixed-configuration protocol.
 
 The reproducibility package is archived on Zenodo:
 
-https://doi.org/10.5281/zenodo.20424855.
+https://doi.org/10.5281/zenodo.21888355.
 
 ## Citation
 
