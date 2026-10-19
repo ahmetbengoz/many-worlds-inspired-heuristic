@@ -1,117 +1,56 @@
-# MWI-H: A Multi-Trajectory Weighting-and-Interaction Heuristic
+# Influence redundancy and structural diversity in population based traveling salesman search
 
-This repository contains the reproducibility package for the manuscript:
+## Version 5 source code
 
-**Do Multi-Trajectory Weights Preserve Search Diversity? A Controlled Component Study of MWI-H on the Symmetric Traveling Salesman Problem**
+This branch contains the source code, tests, and experiment generator for the
+v5 controlled component study. It crosses objective guidance and structural
+survival with common initialization and two bounded ILS controls. It is a
+measurement study, not a claim of state-of-the-art TSP accuracy.
 
-MWI-H is a classical population-based heuristic for symmetric TSP instances. Its
-name denotes **multi-trajectory weighting and interaction**: candidate tours are
-assigned normalized objective-dependent weights, sources exchange information
-through a directed row-stochastic kernel, personal-best memory provides
-trajectory persistence, and bounded 2-opt search intensifies accepted tours.
+Complete experimental records, saved tours, input hashes, and supplementary
+results accompany the manuscript as Online Resource 3. They are not currently
+published on this GitHub branch. The code generates those files locally.
 
-The method is defined by these components rather than by an analogy to a natural
-or physical process. Weight entropy is reported as a diagnostic of influence
-balance; solution-space diversity is measured separately by pairwise undirected
-edge disagreement.
-
-## Repository contents
-
-```text
-data/                     TSPLIB input instances used in the experiments
-src/                      MWI-H and baseline algorithm implementations
-experiments/              Experiment, figure, and table generation scripts
-results/                  Reported fixed-configuration and ablation outputs
-figures/                  Generated manuscript figures in PNG/PDF
-tables/                   Generated manuscript tables in CSV/Markdown
-docs/                     Reproducibility and release notes
-requirements.txt          Python dependencies
-run_smoke_test.ps1        Quick one-instance validation script
-run_standard_experiment.ps1  Full standard experiment script
-```
-
-## Benchmark protocol
-
-The reported experiment uses 11 symmetric Euclidean TSPLIB instances and 30
-independent runs per algorithm-instance pair. MWI-H is compared with an
-operator-controlled iterated local search (ILS), simulated annealing (SA),
-genetic algorithm (GA), ant colony optimization (ACO), and artificial bee
-colony / bee colony optimization (ABC/BCO). The ILS control uses the same
-double-bridge perturbation and bounded 2-opt primitives as MWI-H. A paired
-20-run ablation study tests four component removals on the same instances.
-
-The independent block in the Friedman and paired Wilcoxon analyses is the TSP
-instance (11 blocks). Repeated runs estimate each algorithm-instance mean and
-are not treated as independent problem instances.
-
-The main reported outputs are stored in `results/`:
-
-- `dataset_summary.csv`
-- `per_run_results.csv`
-- `performance_summary.csv`
-- `convergence_curves.csv.gz`
-- `entropy_curves.csv.gz`
-- `statistical_ranks.csv`
-- `statistical_tests.csv`
-- `parameter_settings.json`
-- `ablation/ablation_per_run.csv`
-- `ablation/ablation_summary.csv`
-- `ablation/ablation_tests.csv`
-- `sensitivity/sensitivity_per_run.csv`
-- `sensitivity/sensitivity_summary.csv`
-
-## Quick start
-
-Create and activate a Python environment, then install dependencies:
+### Reproduce
 
 ```bash
-python -m venv .venv
-# Windows
-.venv\Scripts\activate
-# macOS/Linux
-# source .venv/bin/activate
-
-pip install -r requirements.txt
+python -m pip install -r requirements-v5.txt
+python -m pytest tests -q
+python experiments/run_component_study.py --prepare
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python experiments/run_component_study.py --workers 6
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python experiments/run_component_study.py --references --workers 2
+python experiments/analyse_component_study.py
+python experiments/plot_component_study.py
 ```
 
-Run a quick smoke test:
+The preparation step downloads nine additional public EUC_2D TSPLIB instances
+and creates eight seeded synthetic instances, supplementing the eleven public
+instances already present. All six conditions share the same initialization
+for a paired seed. Main seeds are 10001 through 10030; LKH seeds are 1 through 5.
+Synthetic reference lengths are feasible solver bounds, not certified optima.
+The analysis treats instance means as blocks and corrects five primary tests
+with Holm. Run-level data are not independent problem instances.
 
-```bash
-python experiments/run_tsplib_suite.py --fast --runs 1 --instances berlin52 --out-dir results_smoke/berlin52
-```
+The v5 module uses a tested true four-edge double bridge. The legacy routine
+is retained with its archived v4 implementation. The official tsp225 optimum
+is 3916. V5 uses this reference; old metadata carried 3919. The old experiment
+and new experiment must not be pooled.
 
-Reproduce the standard experiment:
+The class-level influence decomposition applies the standard Shannon chain
+rule. Exact clone classes respect undirected edge equivalence, including tour
+rotation and reversal. Distinct tours can still be near-clones, so edge
+disagreement and relative-to-incumbent quality bands are also recorded.
 
-```bash
-python experiments/run_tsplib_suite.py --runs 30
-python experiments/run_ablation.py --runs 20
-python experiments/run_sensitivity.py --runs 10
-python experiments/make_figures.py
-python experiments/make_tables.py
-```
+The quality-band audit was added after two smoke outputs had been inspected
+and is secondary. It changes no search decisions. The --enrich option checks
+replayed best tours, lengths, work counts and original traces before adding
+these fields. Original timing excludes that later measurement extension.
 
-On Windows PowerShell, the same workflow can be launched with:
+The earlier Zenodo DOI 10.5281/zenodo.21888355 identifies v4, not v5. Use the
+exact computational source commit for this version and Online Resource 3 for
+its associated data. No new archival DOI is claimed.
 
-```powershell
-powershell -ExecutionPolicy Bypass -File ./run_standard_experiment.ps1
-```
+## Preserved v4 material
 
-## Interpretation boundary
-
-This package supports a controlled component study on a modest symmetric-TSP
-benchmark. It is not a claim that MWI-H supersedes specialised TSP solvers such
-as LKH or EAX, and it should not be read as evidence of universal superiority
-over other metaheuristics. The paper reports performance, uncertainty,
-instance-level non-parametric tests, ablations, runtime, weight balance, and
-edge diversity within the stated fixed-configuration protocol.
-
-## Archival release
-
-The reproducibility package is archived on Zenodo:
-
-https://doi.org/10.5281/zenodo.21888355.
-
-## Citation
-
-Please cite the associated manuscript and archived release. `CITATION.cff`
-contains the software citation metadata.
+The original source, data and results outside the v5 module remain for historical
+traceability. They describe the earlier experiment and its limitations.
