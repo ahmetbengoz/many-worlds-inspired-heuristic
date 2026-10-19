@@ -1,5 +1,7 @@
 """Publication plots from instance-level v5 summaries only."""
 from pathlib import Path
+from io import BytesIO
+from PIL import Image
 import numpy as np
 import pandas as pd
 import matplotlib
@@ -19,8 +21,16 @@ STYLES=['-','--','-','--']
 
 
 def save(fig,name):
-    for ext in ['png','pdf']:
-        fig.savefig(OUT/f'{name}.{ext}',dpi=600)
+    fig.savefig(OUT/f'{name}.pdf',dpi=600)
+    buffer=BytesIO()
+    fig.savefig(buffer,format='png',dpi=600)
+    payload=buffer.getvalue()
+    with Image.open(BytesIO(payload)) as check:
+        check.verify()
+    target=OUT/f'{name}.png'
+    temporary=target.with_suffix('.png.tmp')
+    temporary.write_bytes(payload)
+    temporary.replace(target)
     plt.close(fig)
 
 

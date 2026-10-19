@@ -1,5 +1,7 @@
 """Plots for the fixed v6 intervention experiment, at the instance level."""
 from pathlib import Path
+from io import BytesIO
+from PIL import Image
 import numpy as np
 import pandas as pd
 import matplotlib
@@ -16,7 +18,15 @@ COLORS=['#20639B','#C05A00','#8064A2','#00866A','#A75375','#444444']
 
 def save(fig,name):
     fig.savefig(OUT/(name+'.pdf'))
-    fig.savefig(OUT/(name+'.png'),dpi=600)
+    buffer=BytesIO()
+    fig.savefig(buffer,format='png',dpi=600)
+    payload=buffer.getvalue()
+    with Image.open(BytesIO(payload)) as check:
+        check.verify()
+    target=OUT/(name+'.png')
+    temporary=target.with_suffix('.png.tmp')
+    temporary.write_bytes(payload)
+    temporary.replace(target)
     plt.close(fig)
 
 
