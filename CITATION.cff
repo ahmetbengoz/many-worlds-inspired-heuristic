@@ -1,12 +1,12 @@
 cff-version: 1.2.0
-message: "Please cite this version of the computational study. The v4 Zenodo DOI identifies the earlier study, not this v5 extension."
+message: "Please cite the exact source commit for this computational study. The v4 Zenodo DOI does not identify the v5 or v6 experiments."
 title: "Influence redundancy and structural diversity in population based traveling salesman search"
 type: software
 authors:
   - family-names: "Bengöz"
     given-names: "Ahmet"
     orcid: "https://orcid.org/0000-0002-5772-4734"
-version: "5.0.0"
+version: "6.0.0"
 date-released: "2026-10-19"
 url: "https://github.com/ahmetbengoz/many-worlds-inspired-heuristic"
 repository-code: "https://github.com/ahmetbengoz/many-worlds-inspired-heuristic"
