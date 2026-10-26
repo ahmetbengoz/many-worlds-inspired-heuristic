@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "Please cite the v6.0.0 release for the complete measurement and control study. The earlier v4 DOI identifies a different experiment."
+message: "Please cite the archived v6.0.0 reproducibility package using its version-specific DOI."
 title: "Influence redundancy and structural diversity in population based traveling salesman search"
 type: software
 authors:
@@ -7,6 +7,7 @@ authors:
     given-names: "Ahmet"
     orcid: "https://orcid.org/0000-0002-5772-4734"
 version: "6.0.0"
+doi: "10.5281/zenodo.23669935"
 date-released: "2026-10-26"
 url: "https://github.com/ahmetbengoz/many-worlds-inspired-heuristic"
 repository-code: "https://github.com/ahmetbengoz/many-worlds-inspired-heuristic"

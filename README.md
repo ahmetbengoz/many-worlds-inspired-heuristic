@@ -71,10 +71,12 @@ and is secondary. It changes no search decisions. The --enrich option checks
 replayed best tours, lengths, work counts and original traces before adding
 these fields. Original timing excludes that later measurement extension.
 
-The earlier Zenodo DOI 10.5281/zenodo.21888355 identifies v4. The publication
-metadata for the new v6.0.0 archive will be added after the GitHub release and
-Zenodo version have been published and checked. No new DOI is asserted before
-that publication is complete.
+The complete v6.0.0 release is archived at
+[https://doi.org/10.5281/zenodo.23669935](https://doi.org/10.5281/zenodo.23669935).
+The immutable release tag `v6.0.0` identifies commit
+`2f18dbd1d6994d2f6f337c5f3b8a0b7dc41038ca`. Cite this version-specific DOI
+for the computational records used in the manuscript. Earlier release DOIs
+identify earlier experiments.
 
 ### Measurement and control extension
 

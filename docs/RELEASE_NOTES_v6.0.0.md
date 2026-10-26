@@ -30,6 +30,12 @@ is not significant at the shorter horizon. Gating alone worsens short-horizon
 quality, and the stronger ILS control changes the short-horizon assessment.
 The data support the stated controlled comparison on symmetric TSP.
 
-The v4.0.1 tag has an older v4.0.0 display title and archival DOI. Those
-historical identifiers are preserved. The new archive receives a separate
-version DOI after publication.
+Archival DOI: https://doi.org/10.5281/zenodo.23669935
+
+Release tag: `v6.0.0`
+
+Release commit: `2f18dbd1d6994d2f6f337c5f3b8a0b7dc41038ca`
+
+The published Zenodo archive and the release contain the same 215 files.
+DOI metadata were finalized after archival publication; search code and
+experimental records are unchanged.

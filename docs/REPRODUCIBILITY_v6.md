@@ -99,4 +99,6 @@ manuscript as Online Resource 3: compressed JSONL best tours and traces, CSV
 results, protocols, environment records and matching code. Large CSV tables
 are compressed as `.csv.gz`; the analyses regenerate uncompressed tables.
 `docs/RELEASE_MANIFEST_v6.0.0.json` hashes all supplied experimental files.
-The older v4 Zenodo DOI identifies the previous experiment.
+The complete v6.0.0 archive is available at
+https://doi.org/10.5281/zenodo.23669935. Its release tag identifies commit
+`2f18dbd1d6994d2f6f337c5f3b8a0b7dc41038ca`.
