@@ -1,0 +1,15 @@
+{
+  "unique_main_runs": 5040,
+  "reference_runs": 140,
+  "total_saved_tours_checked": 5180,
+  "instance_count": 28,
+  "runs_per_condition": 30,
+  "mean_work_overshoot_fraction": 0.00035330985235438857,
+  "maximum_work_overshoot_fraction": 0.002751407884151247,
+  "friedman_statistic": 121.55771195097034,
+  "friedman_p": 1.4680615742438485e-24,
+  "tests": "Exact two-sided Wilcoxon signed-rank for nonzero untied differences; otherwise Pratt ranks with 50000 sign permutations; Holm family of five",
+  "ci": "Median of paired instance differences, percentile bootstrap over instances, 10000 resamples",
+  "secondary_replays": 3360,
+  "timing": "Original performance runs exclude secondary 5/10/20 percent diversity audit; original traces and clone diagnostics included"
+}

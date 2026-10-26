@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT))
 from src.tsplib_extended import parse_extended
-from experiments.analyse_component_study import paired_stats,holm,write_gzip
+from experiments.analyse_component_study import paired_stats,holm,write_gzip,write_csv
 
 OUT=ROOT/'results/v6'
 METHODS=['Guided','Crowding','Gated','Adaptive-class','Adaptive-slot','ILS-descent']
@@ -18,7 +18,14 @@ def records_from(raw_dir,gzip_name,blocks):
     if paths:
         if blocks:return [r for p in paths for r in json.loads(p.read_text()).values()]
         return [r for p in paths for r in json.loads(p.read_text())]
-    with gzip.open(OUT/gzip_name,'rt') as f:return [json.loads(x) for x in f]
+    archive=OUT/gzip_name
+    archives=[archive] if archive.exists() else sorted(
+        OUT.glob(gzip_name.removesuffix('.jsonl.gz')+'.part-*.jsonl.gz'))
+    if not archives:raise FileNotFoundError(archive)
+    records=[]
+    for path in archives:
+        with gzip.open(path,'rt') as f:records.extend(json.loads(x) for x in f)
+    return records
 
 
 def main():
@@ -149,8 +156,8 @@ def main():
        ('stratum_tests',pd.DataFrame(strata)),('dataset_summary',pd.DataFrame(manifest)),
        ('reference_runs',ref_df),('diagnostic_traces',traces_df),('trace_means',trace_means),
        ('trigger_audit',trigger_audit)]:
-        data.to_csv(OUT/(name+'.csv'),index=False)
-        if name in ['per_run','diagnostic_traces']:data.to_csv(OUT/(name+'.csv.gz'),index=False,compression={'method':'gzip','mtime':0})
+        write_csv(OUT/(name+'.csv'),data)
+        if name in ['per_run','diagnostic_traces']:write_csv(OUT/(name+'.csv.gz'),data,compress=True)
     write_gzip(OUT/'run_records.jsonl.gz',records)
     write_gzip(OUT/'reference_records.jsonl.gz',refs)
     (OUT/'validation.json').write_text(json.dumps(validation,indent=2))

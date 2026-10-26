@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-26",
+  "tests_passed": 18,
+  "tests_after_export_change": 18,
+  "atomic_csv_export_validated_rows": 258488,
+  "csv_tables_reconciled": 23,
+  "csv_comparison_is_independent_of_row_and_column_order": true,
+  "numeric_tolerance": {
+    "relative": 1e-12,
+    "absolute": 1e-10
+  },
+  "all_saved_records_equal_to_verified_submission_archive": true,
+  "all_tours_revalidated": true,
+  "unique_main_runs": 20160,
+  "unique_reference_tours": 280,
+  "source_search_commit": "5967a2e47d35b731e9079cf6972e67e39aeee190",
+  "analysis_export_change": "Atomic byte-checked CSV serialization; calculations unchanged",
+  "search_modules_unchanged": true,
+  "tables_compared": [
+    "results/v5/reference_runs.csv",
+    "results/v5/dataset_summary.csv",
+    "results/v5/instance_diagnostic_traces.csv",
+    "results/v5/paired_tests.csv",
+    "results/v5/factorial_tests.csv",
+    "results/v5/stratum_tests.csv",
+    "results/v5/diagnostic_traces.csv",
+    "results/v5/performance_summary.csv",
+    "results/v5/per_run.csv",
+    "results/v5/instance_ranks.csv",
+    "results/v5/method_summary.csv",
+    "results/v6/reference_runs.csv",
+    "results/v6/dataset_summary.csv",
+    "results/v6/paired_tests.csv",
+    "results/v6/matched_horizon_summary.csv",
+    "results/v6/stratum_tests.csv",
+    "results/v6/stratum_summary.csv",
+    "results/v6/trace_means.csv",
+    "results/v6/diagnostic_traces.csv",
+    "results/v6/performance_summary.csv",
+    "results/v6/per_run.csv",
+    "results/v6/method_summary.csv",
+    "results/v6/trigger_audit.csv"
+  ],
+  "main_record_distribution": {
+    "files": 4,
+    "records": 15120,
+    "decompressed_bytes_identical_to_combined_archive": true,
+    "combined_archive_sha256": "d473fee2b60f326a66af610839e860b1d2950c8727bcaaafe429e843750ca9b4",
+    "all_15120_records_loaded_without_change": true,
+    "missing_archive_raises_error": true
+  }
+}

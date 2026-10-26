@@ -1,0 +1,24 @@
+{
+  "unique_main_runs": 15120,
+  "reference_tours_checked": 280,
+  "unique_inputs": 56,
+  "total_tours_checked_in_extension": 15400,
+  "cumulative_unique_main_runs": 20160,
+  "cumulative_unique_reference_runs": 280,
+  "cumulative_unique_tours_checked": 20440,
+  "new_search_reference_runs": 140,
+  "reused_reference_runs": 140,
+  "paired_runs_per_condition": 30,
+  "horizons": {
+    "50": 28,
+    "250": 56
+  },
+  "strong_ils_exact_budget": true,
+  "common_initial_best_verified": true,
+  "nested_population_horizons_verified": true,
+  "all_saved_tours_independently_recomputed": true,
+  "search_module_hashes_verified": true,
+  "primary_holm_family_size": 10,
+  "secondary_stratum_family_size": 15,
+  "note": "The two horizons share initialization but are analysed in separate paired instance blocks. v5 records and the extension remain distinct experiments."
+}

@@ -39,8 +39,19 @@ runtime are not matched by this one-primitive control.
 
 ## Commands
 
-For a source-only checkout, reproduce the first experiment first, using the
-README commands. Then run:
+The v6.0.0 distribution includes all fixed inputs and complete compressed
+records. To regenerate validation, tables and figures without rerunning search,
+install the dependencies, run the tests, then run both analysis scripts and
+both plotting scripts as shown in the README. The analyses read compressed
+JSONL records when per-block cache directories are absent. The extension's
+15,120 main records are split across four ordered
+`results/v6/run_records.part-*.jsonl.gz` files. The loader reads all four as one
+record sequence. Their decompressed concatenation is byte-identical to the
+verified combined archive. Analysis may also read or regenerate that combined
+`run_records.jsonl.gz` file locally.
+
+To rerun search from scratch, use an isolated copy with empty results folders.
+Reproduce the first experiment first, using the README commands. Then run:
 
 ```bash
 python -m pip install -r requirements-v6.txt
@@ -83,8 +94,9 @@ horizons for the original inputs. A same-state audit compares both trigger
 criteria on the Guided populations, without treating outcomes from different
 policies as ground-truth signal labels.
 
-Complete experimental records accompany the manuscript as Online Resource 3,
-including compressed JSONL best tours and traces, CSV results, the protocol,
-environment records and matching code. Those records are not published on this
-GitHub branch. With the archive, analysis and plots can be rebuilt without
-rerunning search. The older v4 Zenodo DOI does not identify this extension.
+Complete experimental records are included in the repository and accompany the
+manuscript as Online Resource 3: compressed JSONL best tours and traces, CSV
+results, protocols, environment records and matching code. Large CSV tables
+are compressed as `.csv.gz`; the analyses regenerate uncompressed tables.
+`docs/RELEASE_MANIFEST_v6.0.0.json` hashes all supplied experimental files.
+The older v4 Zenodo DOI identifies the previous experiment.

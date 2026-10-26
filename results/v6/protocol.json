@@ -1,0 +1,80 @@
+{
+  "version": "6.0.0",
+  "created_utc": "2026-10-19T16:00:06Z",
+  "status": "Exploratory intervention extension informed by inspected v5 results; not preregistered.",
+  "policies": {
+    "Guided": "indexed",
+    "Crowding": "crowding",
+    "Gated": "quality",
+    "Adaptive-class": "adaptive_class",
+    "Adaptive-slot": "adaptive_slot"
+  },
+  "control": "ILS-descent",
+  "population": 16,
+  "trigger": 4,
+  "quality_gate": "For uphill crowding only: candidate <= 1.05 * retained incumbent at iteration start. Improving replacements always eligible. No population-wide quality guarantee.",
+  "iteration_design": {
+    "50": "28 original instances, new seeds",
+    "250": "all 56 instances, new seeds"
+  },
+  "seeds": [
+    20001,
+    20002,
+    20003,
+    20004,
+    20005,
+    20006,
+    20007,
+    20008,
+    20009,
+    20010,
+    20011,
+    20012,
+    20013,
+    20014,
+    20015,
+    20016,
+    20017,
+    20018,
+    20019,
+    20020,
+    20021,
+    20022,
+    20023,
+    20024,
+    20025,
+    20026,
+    20027,
+    20028,
+    20029,
+    20030
+  ],
+  "main_runs": 15120,
+  "guidance": {
+    "beta": 6.0,
+    "gamma": 4.0
+  },
+  "other_parameters": "Identical to v5",
+  "primary_contrasts": [
+    "Gated vs Crowding",
+    "Adaptive-class vs Gated",
+    "Adaptive-class vs Adaptive-slot",
+    "Adaptive-class vs Guided",
+    "Guided vs ILS-descent"
+  ],
+  "primary_family": "10 tests: five paired instance-mean contrasts at each of two horizons, Holm corrected together",
+  "secondary": "56-instance long-horizon family stratified by original EUC, added TSPLIB, and generated instances; descriptive effects and separate exploratory correction",
+  "uncertainty": "10000 paired instance bootstrap samples; exact Wilcoxon for nonzero untied differences, otherwise Pratt ranks with 50000 seeded sign permutations",
+  "stopping": "Population policies generate 16*iterations main proposals. Stagnation restarts add separately counted candidates under the common rule. ILS-descent matches Guided delta trials exactly, including initialization and restarts.",
+  "measurement": "Slot and class influence evaluated each iteration for every population policy; traces every 10 iterations; timing includes online diagnostics",
+  "exclusions": "No post-outcome selection of thresholds or horizons; no parameter tuning on extension outputs. Symmetric instances only because diagnostics use undirected edges.",
+  "source_sha256": {
+    "src/adaptive_study.py": "26225a505c0249e679d79937859d9b032de3f9b8039f6a5f1823b3bb8232ab1e",
+    "src/tsplib_extended.py": "9753c7680aa6d751cd2edecbf85324bb9906335f478e434906c126c5c3c2795e",
+    "experiments/run_adaptive_study.py": "5b282ec685ba12a2dd9df53067cbc2520e2ee35f0d8df8536eb39ec39671c3ee"
+  },
+  "runner_snapshot_at_execution": "results/v6/protocol_source/run_adaptive_study.py",
+  "runner_source_note": "The execution snapshot preserves the exact runner at launch. The distribution runner subsequently added automatic public-input downloads and clarified stopping-rule wording; population and ILS search modules are unchanged.",
+  "distribution_runner_sha256": "1ea06dc70f6a902f3942fc13e6b49f8110dfba967fbc7ce4b0887bba3b41e1a6",
+  "explicit_reference_serialization": "Triangular EXPLICIT files are losslessly expanded to FULL_MATRIX for elkai, whose wrapper rejects triangular input. Search distances and all numerical parameters are unchanged."
+}

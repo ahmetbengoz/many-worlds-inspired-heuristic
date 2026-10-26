@@ -1,0 +1,98 @@
+[
+  {
+    "instance": "att48",
+    "kind": "ATT",
+    "pair_draws": 1000,
+    "nonself_pairs_checked": 982,
+    "independent_reader": "tsplib95 0.7.1",
+    "seed": 95371
+  },
+  {
+    "instance": "att532",
+    "kind": "ATT",
+    "pair_draws": 1000,
+    "nonself_pairs_checked": 995,
+    "independent_reader": "tsplib95 0.7.1",
+    "seed": 95371
+  },
+  {
+    "instance": "gr96",
+    "kind": "GEO",
+    "pair_draws": 1000,
+    "nonself_pairs_checked": 990,
+    "independent_reader": "tsplib95 0.7.1",
+    "seed": 95371
+  },
+  {
+    "instance": "gr137",
+    "kind": "GEO",
+    "pair_draws": 1000,
+    "nonself_pairs_checked": 991,
+    "independent_reader": "tsplib95 0.7.1",
+    "seed": 95371
+  },
+  {
+    "instance": "gr202",
+    "kind": "GEO",
+    "pair_draws": 1000,
+    "nonself_pairs_checked": 993,
+    "independent_reader": "tsplib95 0.7.1",
+    "seed": 95371
+  },
+  {
+    "instance": "gr229",
+    "kind": "GEO",
+    "pair_draws": 1000,
+    "nonself_pairs_checked": 993,
+    "independent_reader": "tsplib95 0.7.1",
+    "seed": 95371
+  },
+  {
+    "instance": "gr431",
+    "kind": "GEO",
+    "pair_draws": 1000,
+    "nonself_pairs_checked": 996,
+    "independent_reader": "tsplib95 0.7.1",
+    "seed": 95371
+  },
+  {
+    "instance": "gr666",
+    "kind": "GEO",
+    "pair_draws": 1000,
+    "nonself_pairs_checked": 999,
+    "independent_reader": "tsplib95 0.7.1",
+    "seed": 95371
+  },
+  {
+    "instance": "gr120",
+    "kind": "EXPLICIT",
+    "pair_draws": 1000,
+    "nonself_pairs_checked": 990,
+    "independent_reader": "tsplib95 0.7.1",
+    "seed": 95371
+  },
+  {
+    "instance": "si175",
+    "kind": "EXPLICIT",
+    "pair_draws": 1000,
+    "nonself_pairs_checked": 994,
+    "independent_reader": "tsplib95 0.7.1",
+    "seed": 95371
+  },
+  {
+    "instance": "si535",
+    "kind": "EXPLICIT",
+    "pair_draws": 1000,
+    "nonself_pairs_checked": 997,
+    "independent_reader": "tsplib95 0.7.1",
+    "seed": 95371
+  },
+  {
+    "instance": "pcb3038",
+    "kind": "EUC_2D",
+    "pair_draws": 1000,
+    "nonself_pairs_checked": 999,
+    "independent_reader": "tsplib95 0.7.1",
+    "seed": 95371
+  }
+]

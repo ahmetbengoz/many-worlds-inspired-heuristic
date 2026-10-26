@@ -1,0 +1,13 @@
+{
+  "title": "Influence redundancy and structural diversity in population based traveling salesman search: reproducibility package",
+  "description": "Complete source code and computational records for two controlled symmetric traveling salesman experiments. The release contains 56 hashed inputs, 20,160 unique main search runs and 280 unique LKH reference tours, saved best tours and diagnostic traces, fixed protocols, processed results, publication figures and independent validation. The original factorial study and the exploratory measurement-control extension retain their separate seed ranges and instance scopes.",
+  "upload_type": "software",
+  "creators": [
+    {"name": "Bengöz, Ahmet", "orcid": "0000-0002-5772-4734", "affiliation": "NATO Support and Procurement Agency, Capellen, Luxembourg"}
+  ],
+  "version": "6.0.0",
+  "publication_date": "2026-10-26",
+  "access_right": "open",
+  "license": "mit",
+  "keywords": ["traveling salesman problem", "population diversity", "influence entropy", "adaptive control", "crowding", "reproducibility"]
+}

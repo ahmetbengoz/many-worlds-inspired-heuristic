@@ -1,6 +1,6 @@
 # Influence redundancy and structural diversity in population based traveling salesman search
 
-## Version 6 source code
+## Version 6.0.0 reproducibility package
 
 This branch contains the source code, tests and experiment generators for a
 measurement and control study of population-based symmetric TSP search. The
@@ -9,9 +9,32 @@ Euclidean instances. The extension tests an incumbent-relative uphill gate and
 class- versus slot-based survival control on 56 instances, with longer search
 and a stronger ILS control. All search parameters are fixed in each protocol.
 
-Complete experimental records, saved tours, input hashes, and supplementary
-results accompany the manuscript as Online Resource 3. They are not currently
-published on this GitHub branch. The code generates those files locally.
+This repository includes the complete records for both experiments: 20,160
+unique main runs, 280 unique LKH reference tours, 56 input instances, saved
+best tours, full diagnostic traces, input hashes and processed results.
+The original experiment remains in `results/v5`; the extension is in
+`results/v6`. The two experiments and their seed ranges remain distinct.
+
+The compressed JSONL records contain every best tour and trace. The extension's
+main records are distributed in four ordered `run_records.part-*.jsonl.gz`
+files, which the analysis loads together automatically. Large CSV tables are
+distributed as `.csv.gz` files. Analysis can be rebuilt directly
+from these records without rerunning search:
+
+```bash
+python -m pip install -r requirements-v6.txt
+python -m pytest tests -q
+python experiments/analyse_component_study.py
+python experiments/analyse_adaptive_study.py
+python experiments/plot_component_study.py
+python experiments/plot_adaptive_study.py
+```
+
+`docs/RELEASE_MANIFEST_v6.0.0.json` records SHA-256 hashes for the released
+experimental files. The search modules match the previously verified
+computational source commit `5967a2e47d35b731e9079cf6972e67e39aeee190`.
+All 20,440 unique saved tours were independently checked. Eighteen code tests
+cover retained policies, clone equivalence, work budgets and distance formats.
 
 ### First experiment
 
@@ -48,9 +71,10 @@ and is secondary. It changes no search decisions. The --enrich option checks
 replayed best tours, lengths, work counts and original traces before adding
 these fields. Original timing excludes that later measurement extension.
 
-The earlier Zenodo DOI 10.5281/zenodo.21888355 identifies v4, not v5 or v6. Use the
-exact computational source commit for this version and Online Resource 3 for
-its associated data. No new archival DOI is claimed.
+The earlier Zenodo DOI 10.5281/zenodo.21888355 identifies v4. The publication
+metadata for the new v6.0.0 archive will be added after the GitHub release and
+Zenodo version have been published and checked. No new DOI is asserted before
+that publication is complete.
 
 ### Measurement and control extension
 
@@ -83,7 +107,7 @@ This extension was designed after the first experiment was inspected. It is
 exploratory. Five paired instance-mean contrasts at each horizon form one
 ten-test Holm family; suite-specific analyses are separately corrected.
 The protocol, search-module hashes, input hashes, environments, all best tours
-and traces accompany the manuscript in Online Resource 3. Completed blocks
+and traces are included here and accompany the manuscript in Online Resource 3. Completed blocks
 can resume from cache after interruption. See
 [the v6 runbook](docs/REPRODUCIBILITY_v6.md) for definitions and verification.
 

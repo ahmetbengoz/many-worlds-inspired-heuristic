@@ -1,0 +1,8 @@
+{
+  "purpose": "Separate whole-population diversity from diversity among tours near the current population best",
+  "status": "Secondary descriptive audit added after two smoke-run outputs were inspected; not a prospectively registered primary endpoint",
+  "bands_percent": [5, 10, 20],
+  "fields": ["number of tours", "number of unique undirected tours", "pairwise edge disagreement"],
+  "search_effect": "None; replay must exactly match best tours, lengths, primitive counts, and original diagnostics",
+  "timing": "Original performance-run timing is retained and excludes this secondary diagnostic extension"
+}

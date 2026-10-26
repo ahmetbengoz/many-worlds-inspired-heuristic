@@ -1,0 +1,8 @@
+{
+  "main_experiment_worker_counts": [6, 7],
+  "main_resume": "The initial session ended before all blocks completed. The same fixed search modules and protocol were resumed from atomic completed-block caches. Original per-run timing was retained for cached blocks.",
+  "reference_worker_counts": [2, 1],
+  "reference_input_fix": "The elkai bridge rejected triangular EXPLICIT storage before producing tours. The three affected inputs were losslessly expanded to FULL_MATRIX and rerun with the same five reference seeds. All other references were retained. No best-of-retry selection was performed.",
+  "timing_interpretation": "Per-process CPU seconds exclude JIT warmup and include run initialization and diagnostics. Wall seconds can include scheduling contention. There is no equal-time comparison with LKH or between the two experimental sessions.",
+  "source_boundary": "The protocol retains the exact launch runner and its hash. Distribution-runner changes concern public input acquisition, wording, and EXPLICIT serialization. Population and ILS search modules are unchanged."
+}

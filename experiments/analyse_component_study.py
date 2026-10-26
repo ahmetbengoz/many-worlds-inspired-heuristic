@@ -67,6 +67,18 @@ def write_gzip(path,records):
                 z.write((json.dumps(row,sort_keys=True,separators=(',',':'))+'\n').encode())
 
 
+def write_csv(path,frame,compress=False):
+    """Serialize a complete table before atomically publishing checked bytes."""
+    payload=frame.to_csv(index=False).encode('utf-8')
+    if compress:
+        payload=gzip.compress(payload,mtime=0)
+    temporary=path.with_name(path.name+'.tmp')
+    written=temporary.write_bytes(payload)
+    if written!=len(payload) or temporary.read_bytes()!=payload:
+        raise IOError('Incomplete CSV export: '+str(path))
+    temporary.replace(path)
+
+
 def load_records():
     raw=sorted((OUT/'raw_runs').glob('*.json'))
     if raw:
@@ -197,9 +209,9 @@ def main():
                        ('stratum_tests',pd.DataFrame(strata)),('factorial_tests',pd.DataFrame(factorial)),
                        ('method_summary',method_summary),('dataset_summary',datasets),('reference_runs',ref_df),
                        ('diagnostic_traces',pd.DataFrame(traces)),('instance_ranks',ranks.reset_index())]:
-        data.to_csv(OUT/f'{name}.csv',index=False)
+        write_csv(OUT/f'{name}.csv',data)
         if name in ['per_run','diagnostic_traces']:
-            data.to_csv(OUT/f'{name}.csv.gz',index=False,compression={'method':'gzip','mtime':0})
+            write_csv(OUT/f'{name}.csv.gz',data,compress=True)
     (OUT/'validation.json').write_text(json.dumps(validation,indent=2))
     write_gzip(OUT/'run_records.jsonl.gz',sorted(records,key=lambda r:(r['instance'],r['method'],r['seed'])))
     write_gzip(OUT/'reference_records.jsonl.gz',sorted(references,key=lambda r:(r['instance'],r['seed'])))
